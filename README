@@ -1,0 +1,12 @@
+This provides comparative benchmarks of Roda, Rails, and Sinatra at
+10, 100, 1000, and 10,000 routes.
+
+To use:
+
+  rake apps bench graphs
+
+Note that rake bench can take quite a long time, especially on slower hardware.
+
+The graphs task requires gruff to create the graphs.  You can skip this step if
+you want, and just look at the underlying .csv files produced by the bench
+task.
