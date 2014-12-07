@@ -27,6 +27,39 @@ File.open("#{File.dirname(__FILE__)}/roda_#{LEVELS}_#{ROUTES_PER_LEVEL}.rb", 'wb
   f.puts "App = Roda.app"
 end
 
+rodarun_apps = lambda do |f, level, prefix|
+  base = BASE_ROUTE.dup
+
+  f.puts "class #{prefix.empty? ? 'Main' : prefix}_App < ::Roda"
+  f.puts "  route do |r|"
+  meth = ( level == 1 ? 'get' : 'on' )
+  ROUTES_PER_LEVEL.times do
+    subtask = ( level == 1 ? 'full_path_info' : "run #{prefix}#{base.upcase}_App" )
+    f.puts "    r.#{meth} '#{base}' do"
+    f.puts "      r.#{subtask}"
+    f.puts "    end"
+    base.succ!
+  end
+  f.puts "  end"
+  f.puts "end"
+
+  if level > 1 then
+    next_base = BASE_ROUTE.dup
+    ROUTES_PER_LEVEL.times do
+      rodarun_apps.call(f, level-1, "#{prefix}#{next_base.upcase}")
+      next_base.succ!
+    end
+  end
+end
+
+
+File.open("#{File.dirname(__FILE__)}/rodarun_#{LEVELS}_#{ROUTES_PER_LEVEL}.rb", 'wb') do |f|
+  f.puts "require 'roda'"
+  rodarun_apps.call(f, LEVELS, '')
+  f.puts "App = Main_App"
+end
+
+
 sinatra_routes = lambda do |f, level, prefix|
   base = BASE_ROUTE.dup
   ROUTES_PER_LEVEL.times do

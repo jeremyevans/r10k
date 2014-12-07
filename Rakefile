@@ -10,7 +10,7 @@ desc "benchmark apps, creating csv data files"
 task :bench => [:apps] do
   apps = {}
   range = 1..4
-  %w'roda rails sinatra'.each do |app|
+  %w'roda rodarun rails sinatra'.each do |app|
     times = apps[app] = {}
     range.each do |i|
       runtimes = []
