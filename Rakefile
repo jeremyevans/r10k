@@ -1,3 +1,4 @@
+require 'rake/clean'
 desc "build the app file"
 task :apps do
   (1..4).each do |i|
@@ -88,4 +89,8 @@ task :graphs_3 do
     g.minimum_value = 0
     g.write(file.sub('.csv', '_3.png'))
   end
+end
+
+IO.readlines(".gitignore").each do |glob|
+  CLOBBER << FileList[glob.strip]
 end
