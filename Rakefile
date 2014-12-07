@@ -7,7 +7,7 @@ task :apps do
 end
 
 desc "benchmark apps, creating csv data files"
-task :bench do
+task :bench => [:apps] do
   apps = {}
   range = 1..4
   %w'roda rails sinatra'.each do |app|
