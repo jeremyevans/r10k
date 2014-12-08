@@ -3,7 +3,7 @@ This provides comparative benchmarks of Roda, Rails, and Sinatra at
 
 To use:
 
-  rake apps bench graphs
+  rake bench graphs
 
 Note that rake bench can take quite a long time, especially on slower hardware.
 
