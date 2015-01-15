@@ -2,8 +2,10 @@
 
 require 'benchmark'
 
+integer = proc{|path| path.split(//).map{|c| c.ord.to_s}.join}
+
 app = ARGV.first
-File.basename(app) =~ /\A([a-z]+)_(\d+)_(\d+)\.rb\z/
+File.basename(app) =~ /\A([-a-z]+)_(\d+)_(\d+)\.rb\z/
 type, levels, routes_per_level = $1, $2.to_i, $3.to_i
 base_route = 'a'.freeze
 env = {"REQUEST_METHOD" => "GET".freeze, "SCRIPT_NAME" => "".freeze, "rack.input"=>File.open('/dev/null')}
@@ -29,9 +31,8 @@ if ENV['CHECK']
       e = env.dup
       path = e[path_info] = "#{prefix}#{b}"
       if level == 1
-        unless (was = app.call(e).last.join) == path
-          p [path, was]
-          raise
+        unless (was = app.call(e).last.join) == integer.call(path)
+          raise "route body does not match expected value for path: #{path}, expected: #{integer.call(path)}, actual: #{was}}"
         end
       else
         request_routes.call("#{prefix}#{b}/", level - 1)

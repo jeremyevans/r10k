@@ -1,3 +1,5 @@
+APPS = ENV['R10K_APPS'] ? ENV['R10K_APPS'].split : %w'roda roda-run roda-multi-route cuba rails sinatra'
+
 require 'rake/clean'
 desc "build the app file"
 task :apps do
@@ -10,7 +12,7 @@ desc "benchmark apps, creating csv data files"
 task :bench => [:apps] do
   apps = {}
   range = 1..4
-  %w'roda rodarun rails sinatra'.each do |app|
+  APPS.each do |app|
     times = apps[app] = {}
     range.each do |i|
       runtimes = []
