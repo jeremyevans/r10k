@@ -53,50 +53,48 @@ task :bench => [:build] do
   end
 end
 
-desc "create graphs using csv data files"
-task :graphs do
+run_graphs = lambda do |columns|
   require 'gruff'
   Dir.mkdir 'graphs' unless File.directory?('graphs')
-  [['runtime', 'Runtime for 20,000 Requests'],
-   ['runtime_with_startup', 'Runtime inc. Startup for 20,000 Requests'],
-   ['memory', 'Initial Memory Usage'],
+
+  [
+    ['runtime', 'Runtime for 20,000 Requests'],
+    ['runtime_with_startup', 'Runtime inc. Startup for 20,000 Requests'],
+    ['memory', 'Initial Memory Usage'],
   ].each do |file, title|
     g = Gruff::Line.new('1280x720')
     g.title = title
-    g.labels = {0=>'10', 1=>'100', 2=>'1000', 3=>'10000'}
+    labels = {}
+    0.upto(columns-1){|i| labels[i] = (10**(i+1)).to_s}
+    g.labels = labels
     g.x_axis_label = 'Number of Routes'
     g.y_axis_label = file == 'memory' ? 'RSS (MB)' : 'Seconds'
-    g.y_axis_increment = file == 'memory' ? 50 : 100
+    max = nil
     File.read("data/#{file}.csv").split("\n")[1..-1].map{|l| l.split(',')}.each do |app, *data|
-      data.map!{|x| x.to_f / 1024.0} if file == 'memory'
-      g.data app.capitalize, data.map{|x| x.to_f}
+      file == 'memory' ? data.map!{|x| x.to_f / 1024.0} : data.map!{|x| x.to_f}
+      max = data.max
+      g.data app.capitalize, data[0...columns].map{|x| x.to_f}
+    end
+    g.y_axis_increment = if max < 10 then 1
+    elsif max < 20 then 5
+    elsif max < 50 then 10
+    elsif max < 100 then 20
+    elsif max < 200 then 50
+    else 100
     end
     g.minimum_value = 0
-    g.write("graphs/#{file}.png")
+    g.write("graphs/#{file}#{"_#{columns}" unless columns == 4}.png")
   end
+end
+
+desc "create graphs using csv data files"
+task :graphs do
+  run_graphs.call(4)
 end
 
 desc "create graphs using csv data files, ignoring 10,000 requests"
 task :graphs_3 do
-  require 'gruff'
-  Dir.mkdir 'graphs' unless File.directory?('graphs')
-  [['runtime.csv', 'Runtime for 20,000 Requests'],
-   ['runtime_with_startup.csv', 'Runtime inc. Startup for 20,000 Requests'],
-   ['memory.csv', 'Initial Memory Usage'],
-  ].each do |file, title|
-    g = Gruff::Line.new('1280x720')
-    g.title = title
-    g.labels = {0=>'10', 1=>'100', 2=>'1000'}
-    g.x_axis_label = 'Number of Routes'
-    g.y_axis_label = file == 'memory' ? 'RSS (MB)' : 'Seconds'
-    g.y_axis_increment = 10
-    File.read("data/#{file}.csv").split("\n")[1..-1].map{|l| l.split(',')}.each do |app, *data|
-      data.map!{|x| x.to_f / 1024.0} if file == 'memory'
-      g.data app.capitalize, data[0...-1].map{|x| x.to_f}
-    end
-    g.minimum_value = 0
-    g.write("graphs/#{file}_3.png")
-  end
+  run_graphs.call(3)
 end
 
 IO.readlines(".gitignore").each do |glob|
