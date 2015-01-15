@@ -1,6 +1,3 @@
-rails_*
-roda_*
-rodarun_*
-sinatra_*
-runtime*
-memory*
+/apps
+/data
+/graphs

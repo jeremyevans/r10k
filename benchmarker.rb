@@ -2,8 +2,6 @@
 
 require 'benchmark'
 
-integer = proc{|path| path.split(//).map{|c| c.ord.to_s}.join}
-
 app = ARGV.first
 File.basename(app) =~ /\A([-a-z]+)_(\d+)_(\d+)\.rb\z/
 type, levels, routes_per_level = $1, $2.to_i, $3.to_i
@@ -25,14 +23,15 @@ class Rack::BodyProxy
 end
 
 if ENV['CHECK']
+  RESULT = proc{|path| path.split(//).map{|c| c.ord.to_s}.join}
   request_routes = lambda do |prefix, level|
     b = base_route.dup
     routes_per_level.times do
       e = env.dup
       path = e[path_info] = "#{prefix}#{b}"
       if level == 1
-        unless (was = app.call(e).last.join) == integer.call(path)
-          raise "route body does not match expected value for path: #{path}, expected: #{integer.call(path)}, actual: #{was}}"
+        unless (was = app.call(e).last.join) == RESULT.call(path)
+          raise "route body does not match expected value for path: #{path}, expected: #{RESULT.call(path)}, actual: #{was}}"
         end
       else
         request_routes.call("#{prefix}#{b}/", level - 1)
