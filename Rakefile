@@ -1,4 +1,4 @@
-APPS = ENV['R10K_APPS'] ? ENV['R10K_APPS'].split : %w'roda roda-run roda-multi-route cuba rails sinatra'
+APPS = ENV['R10K_APPS'] ? ENV['R10K_APPS'].split : %w'static-route roda nyny cuba rails sinatra synfeld'
 RANGE = 1..4
 
 require 'rake/clean'

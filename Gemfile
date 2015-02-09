@@ -6,4 +6,6 @@ gem 'rails'
 gem 'roda'
 gem 'cuba'
 gem 'sinatra'
+gem 'nyny'
+gem 'synfeld'
 

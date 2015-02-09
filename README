@@ -1,6 +1,7 @@
-This provides comparative benchmarks of Roda, Cuba, Rails, and Sinatra with
-10, 100, 1000, and 10,000 routes. It also benchmarks Roda with the multi_route
-plugin and multiple Roda apps using run to dispatch.
+This provides comparative benchmarks of Roda, Cuba, Rails, Sinatra, NYNY, and
+Synfeld with 10, 100, 1000, and 10,000 routes. It also benchmarks Roda with
+the multi_route plugin and multiple Roda apps using run to dispatch, and
+benchmarks a simple static route implementation as a baseline for performance.
 
 To use:
 
