@@ -41,8 +41,10 @@ class App < Rails::Application
   config.active_support.deprecation = :stderr
   config.middleware.delete(ActionDispatch::ShowExceptions)
   config.middleware.delete("Rack::Lock")
+  config.middleware.use(Rack::ContentLength)
   config.logger = Logger.new('/dev/null')
   config.logger.level = 4
+  config.log_level = :error 
 end
 class ApplicationController < ActionController::Base
 end
