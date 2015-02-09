@@ -62,7 +62,7 @@ run_graphs = lambda do |columns|
     ['runtime_with_startup', 'Runtime inc. Startup for 20,000 Requests'],
     ['memory', 'Initial Memory Usage'],
   ].each do |file, title|
-    g = Gruff::Line.new('1280x720')
+    g = Gruff::Line.new(ENV['DIM'] || '1280x720')
     g.title = title
     labels = {}
     0.upto(columns-1){|i| labels[i] = (10**(i+1)).to_s}
