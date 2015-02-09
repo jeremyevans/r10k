@@ -32,8 +32,19 @@ if ENV['CHECK']
       e = env.dup
       path = e[path_info] = "#{prefix}#{b}"
       if level == 1
-        unless (was = app.call(e).last.join) == RESULT.call(path)
-          raise "route body does not match expected value for path: #{path}, expected: #{RESULT.call(path)}, actual: #{was}}"
+        res = app.call(e)
+        expected = RESULT.call(path)
+        unless (body = res.last.join) == expected
+          raise "route body does not match expected value for path: #{path}, expected: #{expected}, actual: #{body}}"
+        end
+        unless res[0] == 200
+          raise "route did not return 200 status for path: #{path}, status: #{res[0]}"
+        end
+        unless res[1]['Content-Type'] =~ /text\/html/
+          raise "route did not use text/html content type for path: #{path}, Content-Type: #{res[1]['Content-Type']}"
+        end
+        unless res[1]['Content-Length'] == expected.length.to_s
+          raise "route did not use correct content length for path: #{path}, expected: #{expected.length}, actual: #{res.inspect}"
         end
       else
         request_routes.call("#{prefix}#{b}/", level - 1)
