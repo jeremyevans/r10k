@@ -69,11 +69,13 @@ run_graphs = lambda do |columns|
     g.labels = labels
     g.x_axis_label = 'Number of Routes'
     g.y_axis_label = file == 'memory' ? 'RSS (MB)' : 'Seconds'
-    max = nil
+    max = 0
     File.read("data/#{file}.csv").split("\n")[1..-1].map{|l| l.split(',')}.each do |app, *data|
+      data = data[0...columns]
       file == 'memory' ? data.map!{|x| x.to_f / 1024.0} : data.map!{|x| x.to_f}
-      max = data.max
-      g.data app.capitalize, data[0...columns].map{|x| x.to_f}
+      dmax = data.max
+      max = dmax if dmax > max
+      g.data app.capitalize, data
     end
     g.y_axis_increment = if max < 10 then 1
     elsif max < 20 then 5
