@@ -14,11 +14,13 @@ ENV['RACK_ENV'] = 'production'
 require "./#{app}"
 app = App
 
-class Rack::BodyProxy
-  def join
-    a = []
-    each{|s| a << s}
-    a.join
+if defined?(Rack::BodyProxy)
+  class Rack::BodyProxy
+    def join
+      a = []
+      each{|s| a << s}
+      a.join
+    end
   end
 end
 
