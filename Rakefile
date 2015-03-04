@@ -63,6 +63,7 @@ run_graphs = lambda do |columns|
     ['memory', 'Initial Memory Usage'],
   ].each do |file, title|
     g = Gruff::Line.new(ENV['DIM'] || '1280x720')
+    g.legend_font_size = ENV['LEGEND_FONT_SIZE'].to_i if ENV['LEGEND_FONT_SIZE']
     g.title = title
     labels = {}
     0.upto(columns-1){|i| labels[i] = (10**(i+1)).to_s}

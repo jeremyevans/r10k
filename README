@@ -20,3 +20,8 @@ use the build task and then look in the apps directory.  The bench task
 produces CSV files which are stored in the data directory.  The graphs
 task takes those CSV files and turns them into nice looking graphs (using
 gruff).
+
+Other environment variables:
+
+DIM: Dimensions for the graphs (default: 1280x720)
+LEGEND_FONT_SIZE: Override base font size for legend text in graphs
