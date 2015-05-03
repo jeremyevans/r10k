@@ -1,0 +1,50 @@
+= r10k
+
+r10k provides comparative benchmarks for many ruby web application frameworks
+with 10, 100, 1000, and 10,000 routes.  Here are the currently supported
+frameworks:
+
+cuba :: Cuba (http://cuba.is)
+nyny :: NYNY (https://github.com/alisnic/nyny)
+rails :: Ruby on Rails (http://rubyonrails.org/)
+roda :: Roda (http://roda.jeremyevans.net)
+sinatra :: Sinatra (http://www.sinatrarb.com/) 
+synfeld :: Synfeld (https://github.com/swerling/synfeld)
+
+These frameworks are designed to be run with the default settings.
+There are some variants that can be run with non-default settings:
+
+static :: A basic static routing implementation, for maximum performance
+rails-minimal-middleware :: Rails, with most middleware removed
+roda-multi-route :: Roda, using the multi_route plugin
+roda-run :: Roda, using separate Roda applications per branch
+sinatra-minimal-middleware :: Sinatra, using the minimum middleware
+
+= Usage
+
+To use:
+
+  rake bench graphs
+
+Note that rake bench can take quite a long time, especially on slower hardware.
+
+If you only want to benchmark specific apps, set the R10K_APPS environment
+variable:
+
+  rake bench graphs R10K_APPS="roda cuba"
+
+The builders directory contains the files that build the applications.
+If you want to examine the application files used for benchmarking, you can
+use the build task and then look in the apps directory.  The bench task
+produces CSV files which are stored in the data directory.  The graphs
+task takes those CSV files and turns them into nice looking graphs (using
+gruff).
+
+Other environment variables:
+
+DIM: Dimensions for the graphs (default: 1280x720)
+LEGEND_FONT_SIZE: Override base font size for legend text in graphs
+
+= Author
+
+Jeremy Evans <code@jeremyevans.net>
