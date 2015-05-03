@@ -31,7 +31,7 @@ rails_controllers = lambda do |f, level, prefix|
   end
 end
 
-File.open("#{File.dirname(__FILE__)}/../apps/rails_#{LEVELS}_#{ROUTES_PER_LEVEL}.rb", 'wb') do |f|
+File.open("#{File.dirname(__FILE__)}/../apps/rails-minimal-middleware_#{LEVELS}_#{ROUTES_PER_LEVEL}.rb", 'wb') do |f|
   f.puts <<END
 require 'action_controller/railtie'
 class App < Rails::Application
