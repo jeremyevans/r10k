@@ -45,6 +45,10 @@ Other environment variables:
 DIM: Dimensions for the graphs (default: 1280x720)
 LEGEND_FONT_SIZE: Override base font size for legend text in graphs
 
+= License
+
+MIT
+
 = Author
 
 Jeremy Evans <code@jeremyevans.net>
