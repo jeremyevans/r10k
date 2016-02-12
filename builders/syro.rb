@@ -3,8 +3,7 @@ syro_routes = lambda do |f, level, prefixes|
   spaces = "  " * (LEVELS - level + 1)
   prefix = prefixes.join('/')
   ROUTES_PER_LEVEL.times do
-    arg = (level == 1 ? "/#{base}\\z/" : "'#{base}'")
-    f.puts "#{spaces}on #{arg} do"
+    f.puts "#{spaces}on '#{base}' do"
     if level == 1
       f.puts "#{spaces}  get do"
       f.puts "#{spaces}    res.write('#{RESULT.call(prefixes.empty? ? base : "#{prefix}/#{base}")}')"
