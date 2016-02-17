@@ -18,6 +18,7 @@ There are some variants that can be run with non-default settings:
 static :: A basic static routing implementation, for maximum performance
 rails-minimal-middleware :: Rails, with most middleware removed
 roda-multi-route :: Roda, using the multi_route plugin
+roda-osm :: Roda, using optimized_string_matchers plugin
 roda-run :: Roda, using separate Roda applications per branch
 sinatra-minimal-middleware :: Sinatra, using the minimum middleware
 
