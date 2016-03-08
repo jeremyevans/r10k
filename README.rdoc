@@ -5,6 +5,7 @@ with 10, 100, 1000, and 10,000 routes.  Here are the currently supported
 frameworks:
 
 cuba :: Cuba (http://cuba.is)
+hanami :: Hanami (http://hanamirb.org/)
 nyny :: NYNY (https://github.com/alisnic/nyny)
 rails :: Ruby on Rails (http://rubyonrails.org/)
 roda :: Roda (http://roda.jeremyevans.net)
@@ -15,7 +16,7 @@ synfeld :: Synfeld (https://github.com/swerling/synfeld)
 These frameworks are designed to be run with the default settings.
 There are some variants that can be run with non-default settings:
 
-static :: A basic static routing implementation, for maximum performance
+static-route :: A basic static routing implementation, for maximum performance
 rails-minimal-middleware :: Rails, with most middleware removed
 roda-multi-route :: Roda, using the multi_route plugin
 roda-osm :: Roda, using optimized_string_matchers plugin
