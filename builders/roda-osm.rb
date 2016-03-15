@@ -1,7 +1,7 @@
 roda_routes = lambda do |f, level, prefixes|
   base = BASE_ROUTE.dup
   spaces = "  " * (LEVELS - level + 1)
-  meth = (level == 1 ? 'is_exactly' : 'on_prefix')
+  meth = (level == 1 ? 'is_exactly' : 'on_branch')
   prefix = prefixes.join('/')
   ROUTES_PER_LEVEL.times do
     f.puts "#{spaces}r.#{meth} '#{base}' do"
