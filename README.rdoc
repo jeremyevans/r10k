@@ -43,10 +43,15 @@ produces CSV files which are stored in the data directory.  The graphs
 task takes those CSV files and turns them into nice looking graphs (using
 gruff).
 
-Other environment variables:
+Environment variables:
 
-DIM: Dimensions for the graphs (default: 1280x720)
-LEGEND_FONT_SIZE: Override base font size for legend text in graphs
+DIM :: Dimensions for the graphs (default: 1280x720)
+LEVELS :: The number of levels for the routes (default: 4)
+LEGEND_FONT_SIZE :: Override base font size for legend text in graphs
+R10K_APPS :: Which applications/configurations to benchmark
+ROUTES_PER_LEVEL :: The number of routes in each level (default: 10)
+
+Total number of routes in largest application is ROUTES_PER_LEVEL**LEVELS.
 
 = License
 

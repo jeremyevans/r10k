@@ -1,6 +1,6 @@
 APPS = ENV['R10K_APPS'] ? ENV['R10K_APPS'].split : %w'static-route syro roda nyny cuba hanami rails sinatra synfeld'
-RANGE = 1..4
-ROUTES_PER_LEVEL = 10
+RANGE = 1..(ENV['LEVELS'] || 4).to_i
+ROUTES_PER_LEVEL = (ENV['ROUTES_PER_LEVEL'] || 10)
 
 require 'rake/clean'
 desc "build the app file"
