@@ -1,5 +1,6 @@
 APPS = ENV['R10K_APPS'] ? ENV['R10K_APPS'].split : %w'static-route syro roda nyny cuba hanami rails sinatra synfeld'
 RANGE = 1..4
+ROUTES_PER_LEVEL = 10
 
 require 'rake/clean'
 desc "build the app file"
@@ -7,7 +8,7 @@ task :build do
   Dir.mkdir 'apps' unless File.directory?('apps')
   APPS.each do |app|
     RANGE.each do |i|
-      sh "#{FileUtils::RUBY} builder.rb #{app} #{i} #{10}"
+      sh "#{FileUtils::RUBY} builder.rb #{app} #{i} #{ROUTES_PER_LEVEL}"
     end
   end
 end
@@ -22,7 +23,7 @@ task :bench => [:build] do
       runtimes_with_startup = []
       memory = []
       3.times do |j|
-        file = "apps/#{app}_#{i}_10.rb"
+        file = "apps/#{app}_#{i}_#{ROUTES_PER_LEVEL}.rb"
         puts "running #{file}, pass #{j+1}"
         t = Time.now
         runtimes << `#{FileUtils::RUBY} benchmarker.rb #{file}`.to_f
@@ -38,7 +39,7 @@ task :bench => [:build] do
     File.open("data/#{file}", 'wb') do |f|
       headers = %w'app'
       RANGE.each do |i|
-        headers << 10**i
+        headers << ROUTES_PER_LEVEL**i
       end
       f.puts headers.join(',')
 
@@ -66,7 +67,7 @@ run_graphs = lambda do |columns|
     g.legend_font_size = ENV['LEGEND_FONT_SIZE'].to_i if ENV['LEGEND_FONT_SIZE']
     g.title = title
     labels = {}
-    0.upto(columns-1){|i| labels[i] = (10**(i+1)).to_s}
+    0.upto(columns-1){|i| labels[i] = (ROUTES_PER_LEVEL**(i+1)).to_s}
     g.labels = labels
     g.x_axis_label = 'Number of Routes'
     g.y_axis_label = file == 'memory' ? 'RSS (MB)' : 'Seconds'
@@ -92,12 +93,12 @@ end
 
 desc "create graphs using csv data files"
 task :graphs do
-  run_graphs.call(4)
+  run_graphs.call(RANGE.end)
 end
 
-desc "create graphs using csv data files, ignoring 10,000 requests"
+desc "create graphs using csv data files, ignoring final level"
 task :graphs_3 do
-  run_graphs.call(3)
+  run_graphs.call(RANGE.end-1)
 end
 
 IO.readlines(".gitignore").each do |glob|
