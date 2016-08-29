@@ -7,6 +7,7 @@ frameworks:
 cuba :: Cuba (http://cuba.is)
 hanami :: Hanami (http://hanamirb.org/)
 nyny :: NYNY (https://github.com/alisnic/nyny)
+rack-app :: Rack::App (https://github.com/rack-app/rack-app)
 rails :: Ruby on Rails (http://rubyonrails.org/)
 roda :: Roda (http://roda.jeremyevans.net)
 sinatra :: Sinatra (http://www.sinatrarb.com/) 
@@ -18,6 +19,7 @@ There are some variants that can be run with non-default settings:
 
 static-route :: A basic static routing implementation, for maximum performance
 rails-minimal-middleware :: Rails, with most middleware removed
+roda-hash:: Roda, using a hash table to store the routes
 roda-multi-route :: Roda, using the multi_route plugin
 roda-osm :: Roda, using optimized_string_matchers plugin
 roda-run :: Roda, using separate Roda applications per branch

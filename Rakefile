@@ -1,4 +1,4 @@
-APPS = ENV['R10K_APPS'] ? ENV['R10K_APPS'].split : %w'static-route syro roda nyny cuba hanami rails sinatra synfeld'
+APPS = ENV['R10K_APPS'] ? ENV['R10K_APPS'].split : %w'static-route syro roda nyny cuba hanami rails sinatra synfeld rack-app'
 RANGE = 1..(ENV['LEVELS'] || 4).to_i
 ROUTES_PER_LEVEL = (ENV['ROUTES_PER_LEVEL'] || 10)
 
