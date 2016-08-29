@@ -19,10 +19,10 @@ There are some variants that can be run with non-default settings:
 
 static-route :: A basic static routing implementation, for maximum performance
 rails-minimal-middleware :: Rails, with most middleware removed
-roda-hash:: Roda, using a hash table to store the routes
 roda-multi-route :: Roda, using the multi_route plugin
 roda-osm :: Roda, using optimized_string_matchers plugin
 roda-run :: Roda, using separate Roda applications per branch
+roda-static-routing :: Roda, using the static_routing plugin
 sinatra-minimal-middleware :: Sinatra, using the minimum middleware
 
 = Usage
