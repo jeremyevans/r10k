@@ -15,6 +15,7 @@ end
 File.open("#{File.dirname(__FILE__)}/../apps/rack-app_#{LEVELS}_#{ROUTES_PER_LEVEL}.rb", 'wb') do |f|
   f.puts "require 'rack/app'"
   f.puts "class App < Rack::App"
+  f.puts "  use Rack::App::Middlewares::HeaderSetter, 'Content-Type'=>'text/html'"
   rack_app_routes.call(f, LEVELS, '/')
   f.puts "end"
 end
