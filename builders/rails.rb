@@ -18,7 +18,7 @@ rails_controllers = lambda do |f, level, prefix|
     f.puts "class #{prefix.empty? ? 'Main' : prefix}Controller < ApplicationController"
     ROUTES_PER_LEVEL.times do
       f.puts "  def #{base}"
-      f.puts "    render :text=>'#{RESULT.call((prefix + base).downcase.split(//).join('/'))}'"
+      f.puts "    render :html=>'#{RESULT.call((prefix + base).downcase.split(//).join('/'))}'"
       f.puts "  end"
       base.succ!
     end
@@ -40,7 +40,7 @@ class App < Rails::Application
   config.eager_load = true
   config.active_support.deprecation = :stderr
   config.middleware.delete(ActionDispatch::ShowExceptions)
-  config.middleware.delete("Rack::Lock")
+  config.middleware.delete(Rack::Lock)
   config.middleware.use(Rack::ContentLength)
   config.logger = Logger.new('/dev/null')
   config.logger.level = 4
