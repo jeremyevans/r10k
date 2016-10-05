@@ -10,8 +10,8 @@ nyny :: NYNY (https://github.com/alisnic/nyny)
 rack-app :: Rack::App (https://github.com/rack-app/rack-app)
 rails :: Ruby on Rails (http://rubyonrails.org/)
 roda :: Roda (http://roda.jeremyevans.net)
-sinatra :: Sinatra (http://www.sinatrarb.com/) 
-syro : Syro (http://soveran.github.io/syro/)
+sinatra :: Sinatra (http://www.sinatrarb.com/)
+syro :: Syro (http://soveran.github.io/syro/)
 synfeld :: Synfeld (https://github.com/swerling/synfeld)
 
 These frameworks are designed to be run with the default settings.

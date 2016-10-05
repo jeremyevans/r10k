@@ -8,4 +8,5 @@ gem 'cuba'
 gem 'sinatra'
 gem 'nyny'
 gem 'synfeld'
+gem 'syro'
 
