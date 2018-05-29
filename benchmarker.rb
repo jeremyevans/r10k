@@ -68,5 +68,13 @@ else
   end
 end
 
-n = 20000/(routes_per_level ** levels)
+unless (n = ENV['R10K_ITERATIONS'].to_i) > 0
+  n = 2
+end
+n *= 10000/(routes_per_level ** levels)
+
+if (warmup = ENV['R10K_WARMUP_ITERATIONS'].to_i) > 0
+  warmup.times{request_routes.call("/", levels)}
+end
+
 puts Benchmark.measure{n.times{request_routes.call("/", levels)}}.real
