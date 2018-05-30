@@ -51,7 +51,8 @@ DIM :: Dimensions for the graphs (default: 1280x720)
 LEVELS :: The number of levels for the routes (default: 4)
 LEGEND_FONT_SIZE :: Override base font size for legend text in graphs
 R10K_APPS :: Which applications/configurations to benchmark
-R10_ITERATIONS :: The number of iterations to run (default: 2)
+R10K_ITERATIONS :: The number of iterations to run (default: 2)
+R10K_NUM_THREADS :: The number of threads to run (default: 1)
 R10K_WARMUP_ITERATIONS :: The number of warmup iterations to run (default: 0)
 ROUTES_PER_LEVEL :: The number of routes in each level (default: 10)
 

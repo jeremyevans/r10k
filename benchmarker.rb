@@ -77,4 +77,21 @@ if (warmup = ENV['R10K_WARMUP_ITERATIONS'].to_i) > 0
   warmup.times{request_routes.call("/", levels)}
 end
 
-puts Benchmark.measure{n.times{request_routes.call("/", levels)}}.real
+bm = if (threads = ENV['R10K_NUM_THREADS'].to_i) > 0
+  queue = Queue.new
+  n.times{queue.push(true)}
+  threads.times{queue.push(nil)}
+  Benchmark.measure do
+    (0...threads).map do
+      Thread.new do
+        while pr = queue.pop
+          request_routes.call("/", levels)
+        end
+      end
+    end.map(&:join)
+  end
+else
+  Benchmark.measure{n.times{request_routes.call("/", levels)}}
+end
+
+puts bm.real
