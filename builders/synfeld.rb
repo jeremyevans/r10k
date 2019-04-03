@@ -25,6 +25,7 @@ synfeld_methods = lambda do |f, level, prefix|
 end
 
 File.open("#{File.dirname(__FILE__)}/../apps/synfeld_#{LEVELS}_#{ROUTES_PER_LEVEL}.rb", 'wb') do |f|
+  f.puts "# frozen-string-literal: true"
   f.puts "require 'synfeld'"
   f.puts "class AppClass < Synfeld::App"
   f.puts "  def add_routes"
@@ -36,4 +37,3 @@ File.open("#{File.dirname(__FILE__)}/../apps/synfeld_#{LEVELS}_#{ROUTES_PER_LEVE
   f.puts "def o.method_missing(*) end"
   f.puts "App = AppClass.new(:logger=>o, :root_dir=>File.dirname(__FILE__)).as_rack_app"
 end
-

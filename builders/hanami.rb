@@ -41,6 +41,7 @@ hanami_controllers = lambda do |f, level, prefix|
 end
 
 File.open("#{File.dirname(__FILE__)}/../apps/hanami_#{LEVELS}_#{ROUTES_PER_LEVEL}.rb", 'wb') do |f|
+  f.puts "# frozen-string-literal: true"
   f.puts "require 'hanami/router'"
   f.puts "require 'hanami/controller'"
   hanami_controllers.call(f, LEVELS, '')

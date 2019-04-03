@@ -13,6 +13,7 @@ nyny_routes = lambda do |f, level, prefix|
 end
 
 File.open("#{File.dirname(__FILE__)}/../apps/nyny_#{LEVELS}_#{ROUTES_PER_LEVEL}.rb", 'wb') do |f|
+  f.puts "# frozen-string-literal: true"
   f.puts "require 'nyny'"
   f.puts "class AppClass < NYNY::App"
   nyny_routes.call(f, LEVELS, '/')

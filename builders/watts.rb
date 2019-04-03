@@ -13,6 +13,7 @@ watts_routes = lambda do |f, level, prefix|
 end
 
 File.open("#{File.dirname(__FILE__)}/../apps/watts_#{LEVELS}_#{ROUTES_PER_LEVEL}.rb", 'wb') do |f|
+  f.puts "# frozen-string-literal: true"
   f.puts "require 'watts'"
   f.puts "class AppClass < Watts::App"
   watts_routes.call(f, LEVELS, '/')

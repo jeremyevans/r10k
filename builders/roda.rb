@@ -16,11 +16,13 @@ roda_routes = lambda do |f, level, prefixes|
 end
 
 File.open("#{File.dirname(__FILE__)}/../apps/roda_#{LEVELS}_#{ROUTES_PER_LEVEL}.rb", 'wb') do |f|
+  f.puts "# frozen-string-literal: true"
   f.puts "require 'roda'"
+  f.puts "Roda.plugin :direct_call"
   f.puts "Roda.route do |r|"
   f.puts "r.get do"
   roda_routes.call(f, LEVELS, [])
   f.puts "end"
   f.puts "end"
-  f.puts "App = Roda.app"
+  f.puts "App = Roda.freeze.app"
 end

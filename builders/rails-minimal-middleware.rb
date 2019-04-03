@@ -33,6 +33,7 @@ end
 
 File.open("#{File.dirname(__FILE__)}/../apps/rails-minimal-middleware_#{LEVELS}_#{ROUTES_PER_LEVEL}.rb", 'wb') do |f|
   f.puts <<END
+# frozen-string-literal: true
 require 'action_controller/railtie'
 class App < Rails::Application
   config.secret_token = '1234567890'*5

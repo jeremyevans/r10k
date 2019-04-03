@@ -16,6 +16,7 @@ cuba_routes = lambda do |f, level, prefixes|
 end
 
 File.open("#{File.dirname(__FILE__)}/../apps/cuba_#{LEVELS}_#{ROUTES_PER_LEVEL}.rb", 'wb') do |f|
+  f.puts "# frozen-string-literal: true"
   f.puts "require 'cuba'"
   f.puts "Cuba.define do"
   f.puts "on get do"

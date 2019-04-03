@@ -25,7 +25,9 @@ rodarun_apps = lambda do |f, level, prefixes|
 end
 
 File.open("#{File.dirname(__FILE__)}/../apps/roda-run_#{LEVELS}_#{ROUTES_PER_LEVEL}.rb", 'wb') do |f|
+  f.puts "# frozen-string-literal: true"
   f.puts "require 'roda'"
+  f.puts "Roda.plugin :direct_call"
   rodarun_apps.call(f, LEVELS, [])
-  f.puts "App = Main_App"
+  f.puts "App = Main_App.freeze.app"
 end

@@ -14,6 +14,7 @@ end
 
 matcher = '(?:\\/([^\\/]*))?'
 File.open("#{File.dirname(__FILE__)}/../apps/static-route_#{LEVELS}_#{ROUTES_PER_LEVEL}.rb", 'wb') do |f|
+  f.puts "# frozen-string-literal: true"
   f.puts "class App"
   f.puts "  class << self"
   f.puts "    def call(env)"

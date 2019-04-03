@@ -17,6 +17,7 @@ syro_routes = lambda do |f, level, prefixes|
 end
 
 File.open("#{File.dirname(__FILE__)}/../apps/syro_#{LEVELS}_#{ROUTES_PER_LEVEL}.rb", 'wb') do |f|
+  f.puts "# frozen-string-literal: true"
   f.puts "require 'syro'"
   f.puts "app = Syro.new do"
   syro_routes.call(f, LEVELS, [])

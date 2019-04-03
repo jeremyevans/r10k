@@ -13,11 +13,14 @@ roda_static_routes = lambda do |f, level, prefix|
 end
 
 File.open("#{File.dirname(__FILE__)}/../apps/roda-static-routing_#{LEVELS}_#{ROUTES_PER_LEVEL}.rb", 'wb') do |f|
+  f.puts "# frozen-string-literal: true"
   f.puts "require 'roda'"
-  f.puts "class App < Roda"
+  f.puts "class Roda"
   f.puts "  plugin :static_routing"
+  f.puts "  plugin :direct_call"
   roda_static_routes.call(f, LEVELS, '/')
   f.puts "  route do |r|"
   f.puts "  end"
   f.puts "end"
+  f.puts "App = Roda.freeze.app"
 end
