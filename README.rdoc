@@ -48,6 +48,7 @@ gruff).
 
 Environment variables:
 
+CHECK :: Check that the built apps return the expected values
 DIM :: Dimensions for the graphs (default: 1280x720)
 LEVELS :: The number of levels for the routes (default: 4)
 LEGEND_FONT_SIZE :: Override base font size for legend text in graphs
