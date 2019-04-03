@@ -1,6 +1,5 @@
 roda_multi_routes = lambda do |f, level, prefixes|
   base = BASE_ROUTE.dup
-  meth = (level == 1 ? 'is' : 'on')
   prefix = prefixes.join('/')
   ROUTES_PER_LEVEL.times do
     f.puts "Roda.route('#{base}'#{", '#{prefix}'" unless prefixes.empty?}) do |r|"
