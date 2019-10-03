@@ -27,6 +27,10 @@ roda-run :: Roda, using separate Roda applications per branch
 roda-static-routing :: Roda, using the static_routing plugin
 sinatra-minimal-middleware :: Sinatra, using the minimum middleware
 
+The frameworks that are tested by default are:
+
+  static-route syro roda cuba hanami rails sinatra rack-app watts
+
 = Usage
 
 To use:
