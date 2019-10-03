@@ -10,4 +10,4 @@ gem 'nyny'
 gem 'synfeld'
 gem 'syro'
 gem 'rack-app'
-
+gem 'hanami'
