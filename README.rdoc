@@ -31,6 +31,16 @@ The frameworks that are tested by default are:
 
   static-route syro roda cuba hanami rails sinatra rack-app watts
 
+= Installation
+
+After cloning the repository, install the related gems:
+
+  gem install gruff # if you want to create the graphs
+  gem install roda sinatra rails cuba syro hanami # frameworks to test
+
+A Gemfile is not used, because all webframeworks are tested independently,
+and with a Gemfile, bundler assumes all gems must be able to work together.
+
 = Usage
 
 To use:
