@@ -17,7 +17,6 @@ end
 
 File.open("#{File.dirname(__FILE__)}/../apps/hanami-api_#{LEVELS}_#{ROUTES_PER_LEVEL}.rb", 'wb') do |f|
   f.puts "# frozen_string_literal: true"
-  f.puts "require 'bundler/setup'"
   f.puts "require 'hanami/api'"
   f.puts "class API < Hanami::API"
   hanami_routes.call(f, LEVELS, '')
