@@ -2,44 +2,39 @@
 
 r10k provides comparative benchmarks for many ruby web application frameworks
 with 10, 100, 1000, and 10,000 routes.  Here are the currently supported
-frameworks:
+frameworks (in order of number of gem downloads):
 
+rails :: Ruby on Rails (http://rubyonrails.org/)
+sinatra :: Sinatra (http://www.sinatrarb.com/)
+roda :: Roda (http://roda.jeremyevans.net)
 cuba :: Cuba (http://cuba.is)
 hanami :: Hanami (http://hanamirb.org/)
-nyny :: NYNY (https://github.com/alisnic/nyny)
-rack-app :: Rack::App (https://github.com/rack-app/rack-app)
-rails :: Ruby on Rails (http://rubyonrails.org/)
-roda :: Roda (http://roda.jeremyevans.net)
-sinatra :: Sinatra (http://www.sinatrarb.com/)
 syro :: Syro (http://soveran.github.io/syro/)
-synfeld :: Synfeld (https://github.com/swerling/synfeld)
-watts :: Watts (https://github.com/pete/watts)
 
 These frameworks are designed to be run with the default settings.
 There are some variants that can be run with non-default settings:
 
-static-route :: A basic static routing implementation, for maximum performance
-hanami-api :: Hanami, using hanami-api gem
-rails-minimal-middleware :: Rails, with most middleware removed
 roda-hash-routes:: Roda, using the hash_routes plugins
-roda-multi-route :: Roda, using the multi_route plugin
-roda-osm :: Roda, using optimized_string_matchers plugin
-roda-run :: Roda, using separate Roda applications per branch
-roda-static-routing :: Roda, using the static_routing plugin
-sinatra-minimal-middleware :: Sinatra, using the minimum middleware
+roda-osm :: Roda, using optimized_string_matchers and optimized_segment_matchers plugins
+hanami-api :: Hanami, using hanami-api gem
 
-The frameworks that are tested by default are:
+The frameworks that are tested by default are those with more than 250,000
+gem downloads, except for Sinatra:
 
-  static-route syro roda cuba hanami rails sinatra rack-app watts
+  rails roda cuba hanami
+
+Sinatra is excluded by default because testing sinatra takes about 6x
+longer than testing Rails, and testing Rails takes 6-25x longer than testing
+Roda, Cuba, or Hanami.
 
 = Installation
 
 After cloning the repository, install the related gems:
 
   gem install gruff # if you want to create the graphs
-  gem install roda sinatra rails cuba syro hanami # frameworks to test
+  gem install rails roda cuba hanami # frameworks to test
 
-A Gemfile is not used, because all webframeworks are tested independently,
+A Gemfile is not used, because all web frameworks are tested independently,
 and with a Gemfile, bundler assumes all gems must be able to work together.
 
 = Usage
@@ -48,8 +43,7 @@ To use:
 
   rake bench graphs
 
-Note that rake bench can take quite a long time, especially on slower hardware.
-
+Note that rake bench can take significant time, especially on slower hardware.
 If you only want to benchmark specific apps, set the R10K_APPS environment
 variable:
 
@@ -60,11 +54,65 @@ If you want to examine the application files used for benchmarking, you can
 use the build task and then look in the apps directory.  The bench task
 produces CSV files which are stored in the data directory.  The graphs
 task takes those CSV files and turns them into nice looking graphs (using
-gruff).
+gruff), storing the graphs in the graphs directory.
+
+= Checking
+
+If you want to add support for a new framework, or check that support for
+existing frameworks runs correctly, use the check task:
+
+  rake check
+
+This ensures the following:
+
+* Incomplete routes return 404
+* POST requests return 404 or 405
+* All valid routes return expected bodies 
+* All valid routes return 200 status
+* All valid routes include text/html in Content-Type header
+* All valid routes return correct Content-Length
+
+Because most Ruby web frameworks tested do not treat trailing slashes in
+routes correctly, considering a request without a trailing slash the
+same as a request with a trailing slash, the check task will only warn for
+incorrect handling of trailing slashes, instead of raising an exception.
+Of the web frameworks tested, only Roda and Sinatra treat routes with
+trailing slashes correctly.
+
+To save time, checks are done with only 2 routes per level.
+
+= Static Benchmarks
+
+r10k historically used static paths in benchmarks.  This was determined to
+be a poor benchmark, since the fastest implementations basically just used
+a Ruby hash for route lookup.  The dynamic route benchmarks that r10k now
+uses are more similar to production routes.  However, there may still be
+be value it benchmarking static route performance, so the static route
+benchmarks are still available:
+
+  rake static_bench static_graphs
+
+The data for the static route benchmarks can be found in the static/data
+directory, and the graphs in the static/graphs directory.
+
+Additional web frameworks are supported for the static benchmarks:
+
+nyny :: NYNY (https://github.com/alisnic/nyny)
+rack-app :: Rack::App (https://github.com/rack-app/rack-app)
+synfeld :: Synfeld (https://github.com/swerling/synfeld)
+watts :: Watts (https://github.com/pete/watts)
+
+Additional variants are supported for the static benchmarks:
+
+static-route :: A simple Rack implementation
+rails-minimal-middleware :: Rails, with most middleware removed
+roda-multi-route :: Roda, using the multi_route plugin
+roda-run :: Roda, using separate Roda applications per branch
+roda-static-routing :: Roda, using the static_routing plugin
+sinatra-minimal-middleware :: Sinatra, using the minimum middleware
 
 Environment variables:
 
-CHECK :: Check that the built apps return the expected values
 DIM :: Dimensions for the graphs (default: 1280x720)
 LEVELS :: The number of levels for the routes (default: 4)
 LEGEND_FONT_SIZE :: Override base font size for legend text in graphs

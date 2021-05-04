@@ -24,45 +24,25 @@ if defined?(Rack::BodyProxy)
   end
 end
 
-vars = levels.times.map{sprintf("%06i", (rand*1000000).floor)}
-expected_suffix = "-#{vars.join('-')}"
-
 all_routes = []
 RESULT = proc{|path| path.split(//).map{|c| c.ord.to_s}.join}
 
-request_routes = lambda do |prefix, level, calc_path, vars|
+request_routes = lambda do |prefix, level|
   b = base_route.dup
-  var, *vars = vars
   routes_per_level.times do
     e = env.dup
-    path = e[path_info] = "#{prefix}#{b}/#{var}"
+    path = e[path_info] = "#{prefix}#{b}"
     if level == 1
-      all_routes << [e, RESULT.call("#{calc_path}#{b}") + expected_suffix]
+      all_routes << [e, RESULT.call("#{prefix}#{b}")]
     else
-      request_routes.call("#{prefix}#{b}/#{var}/", level - 1, "#{calc_path}#{b}/", vars)
+      request_routes.call("#{prefix}#{b}/", level - 1)
     end
     b.succ!
   end
 end
-request_routes.call("/", levels, "/", vars)
+request_routes.call("/", levels)
 
 if ENV['CHECK']
-  basic_checks = lambda do
-    e, _ = all_routes[0]
-    res = app.call(e.merge('PATH_INFO'=>e['PATH_INFO'].gsub(/\d+\z/, '')))
-    if res[0] != 404
-      raise "route did not return 404 status for path: #{e['PATH_INFO'][0...-1]}, status: #{res[0]}"
-    end
-    res = app.call(e.merge('PATH_INFO'=>e['PATH_INFO'] + '/'))
-    if res[0] != 404
-      warn "warning: route did not return 404 status for trailing slash for path: #{e['PATH_INFO']}/, status: #{res[0]}"
-    end
-    res = app.call(e.merge('REQUEST_METHOD'=>'POST'))
-    if ![404, 405].include?(res[0])
-      raise "route did not return 404 or 405 status for POST request to path: #{e['PATH_INFO']}, status: #{res[0]}"
-    end
-  end.call
-
   run_routes = lambda do
     all_routes.each do |e, expected|
       res = app.call(Hash[e])

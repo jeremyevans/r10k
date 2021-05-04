@@ -1,15 +1,15 @@
-hanami_routes = lambda do |f, level, prefix|
+hanami_routes = lambda do |f, level, prefix, calc_path, lvars|
   base = BASE_ROUTE.dup
-  controller = prefix.gsub('/', '_')
-  controller = 'main' if controller.empty?
-  spaces = "  " * (LEVELS - level + 1)
   ROUTES_PER_LEVEL.times do
     if level == 1
-      f.puts "#{spaces}  get '/#{base}' do\n#{spaces}'#{RESULT.call((prefix + base).downcase.split(//).join('/'))}'\n#{spaces}end"
+      f.puts "  get '#{prefix}#{base}/:#{lvars.last}'  do"
+      f.puts "    body = \"#{RESULT.call(calc_path[1..-1] + base)}#{lvars.map{|lvar| "-\#{params[:#{lvar}]}"}.join}\""
+      f.puts "    headers['Content-Type'] = 'text/html'"
+      f.puts "    headers['Content-Length'] = body.length.to_s"
+      f.puts "    body"
+      f.puts "  end"
     else
-      f.puts "#{spaces}scope '#{base}' do"
-      hanami_routes.call(f, level-1, "#{prefix}#{'/' unless prefix.empty?}#{base}")
-      f.puts "#{spaces}end"
+      hanami_routes.call(f, level-1, "#{prefix}#{base}/:#{lvars.last}/", "#{calc_path}#{base}/", lvars + [lvars.last.succ])
     end
     base.succ!
   end
@@ -19,7 +19,7 @@ File.open("#{File.dirname(__FILE__)}/../apps/hanami-api_#{LEVELS}_#{ROUTES_PER_L
   f.puts "# frozen_string_literal: true"
   f.puts "require 'hanami/api'"
   f.puts "class API < Hanami::API"
-  hanami_routes.call(f, LEVELS, '')
+  hanami_routes.call(f, LEVELS, '/', '/', ['a'])
   f.puts "end"
   f.puts "App = API.new"
 end

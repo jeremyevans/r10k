@@ -1,8 +1,9 @@
 #!/usr/bin/env ruby
 
-ROUTES_PER_LEVEL = (ARGV.pop || 10).to_i
-LEVELS = (ARGV.pop || 5).to_i
+dir, app_type, num_levels, per_level = ARGV
+ROUTES_PER_LEVEL = (per_level || 10).to_i
+LEVELS = (num_levels || 4).to_i
 BASE_ROUTE = 'a'.freeze
 RESULT = proc{|path| "/#{path}".split(//).map{|c| c.ord.to_s}.join}
 
-require "./builders/#{ARGV.pop}"
+require "./#{dir}builders/#{app_type}"

@@ -1,28 +1,31 @@
-rails_routes = lambda do |f, level, prefix, lvars|
+rails_routes = lambda do |f, level, prefix|
   base = BASE_ROUTE.dup
-  controller = prefix.gsub('/', '').gsub(/:\w/, '')
+  controller = prefix.gsub('/', '_')
+  controller = 'main' if controller.empty?
   ROUTES_PER_LEVEL.times do
     if level == 1
-      f.puts "  get '#{prefix}#{base}/:#{lvars.last}' => 'main##{controller}#{base}'"
+      f.puts "  get '#{prefix}#{'/' unless prefix.empty?}#{base}' => '#{controller}##{base}'"
     else
-      rails_routes.call(f, level-1, "#{prefix}#{base}/:#{lvars.last}/", lvars + [lvars.last.succ])
+      rails_routes.call(f, level-1, "#{prefix}#{'/' unless prefix.empty?}#{base}")
     end
     base.succ!
   end
 end
 
-rails_controllers = lambda do |f, level, prefix, lvars|
+rails_controllers = lambda do |f, level, prefix|
   base = BASE_ROUTE.dup
   if level == 1
+    f.puts "class #{prefix.empty? ? 'Main' : prefix}Controller < ApplicationController"
     ROUTES_PER_LEVEL.times do
-      f.puts "  def #{(prefix + base).gsub('/', '')}"
-      f.puts "    render :html=>\"#{RESULT.call(prefix + base)}#{lvars.map{|lvar| "-\#{params[:#{lvar}]}"}.join}\""
+      f.puts "  def #{base}"
+      f.puts "    render :html=>'#{RESULT.call((prefix + base).downcase.split(//).join('/'))}'"
       f.puts "  end"
       base.succ!
     end
+    f.puts "end"
   else
     ROUTES_PER_LEVEL.times do
-      rails_controllers.call(f, level-1, "#{prefix}#{base}/", lvars + [lvars.last.succ])
+      rails_controllers.call(f, level-1, "#{prefix}#{base.upcase}")
       base.succ!
     end
   end
@@ -45,19 +48,13 @@ class App < Rails::Application
   config.log_level = :error 
 end
 class ApplicationController < ActionController::Base
-  def route_not_found
-    head 404
-  end
 end
-class MainController < ApplicationController
 END
-  rails_controllers.call(f, LEVELS, '', ['a'])
-  f.puts "end"
+  rails_controllers.call(f, LEVELS, '')
   f.puts "App.initialize!"
   f.puts "App.routes.clear!"
   f.puts "App.routes.draw do"
-  rails_routes.call(f, LEVELS, '/', ['a'])
-  f.puts "  match '*unmatched', to: 'application#route_not_found', via: :all"
+  rails_routes.call(f, LEVELS, '')
   f.puts "end"
 end
 
