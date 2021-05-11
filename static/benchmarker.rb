@@ -72,7 +72,7 @@ end
 unless (n = ENV['R10K_ITERATIONS'].to_i) > 0
   n = 2
 end
-n *= 10000/(routes_per_level ** levels)
+n *= (10000.0/(routes_per_level ** levels)).ceil
 
 if (warmup = ENV['R10K_WARMUP_ITERATIONS'].to_i) > 0
   warmup.times{run_routes.call}
