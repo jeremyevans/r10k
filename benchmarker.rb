@@ -115,4 +115,4 @@ else
   Benchmark.measure{n.times{run_routes.call}}
 end
 
-puts bm.real
+puts((all_routes.size * n) / bm.real)

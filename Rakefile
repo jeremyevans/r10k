@@ -34,9 +34,9 @@ end)
     apps = {}
     checking = ENV['CHECK']
     APPS.each do |app|
-      times = apps[app] = {}
+      metrics = apps[app] = {}
       RANGE.each do |i|
-        runtimes = []
+        rpss = []
         runtimes_with_startup = []
         memory = []
         routes_per_level = checking ? 2 : ROUTES_PER_LEVEL
@@ -44,16 +44,16 @@ end)
           file = "#{apps_dir}/#{app}_#{i}_#{routes_per_level}.rb"
           send(checking ? :puts : :print, "running #{file}, pass #{j+1}")
           t = Process.clock_gettime(Process::CLOCK_MONOTONIC)
-          runtime = `#{FileUtils::RUBY} #{dir}benchmarker.rb #{file}`.to_f
+          rps = `#{FileUtils::RUBY} #{dir}benchmarker.rb #{file}`.to_f
 
           next if checking
 
-          runtimes << runtime
-          puts ", #{sprintf('%0.04f', runtime)} seconds"
+          rpss << rps 
+          puts ", #{rps.to_i} requests/second"
           runtimes_with_startup << Process.clock_gettime(Process::CLOCK_MONOTONIC) - t
           memory << `#{FileUtils::RUBY} -r ./#{file}  -e 'GC.start; system("ps -o rss -p \#{$$}")'`.split.last.to_i
         end
-        times[i] = [runtimes.min, runtimes_with_startup.min, memory.min]
+        metrics[i] = [rpss.max, runtimes_with_startup.min, memory.min]
       end
     end
 
@@ -63,7 +63,7 @@ end)
     end
 
     Dir.mkdir data_dir unless File.directory?(data_dir)
-    %w'runtime.csv runtime_with_startup.csv memory.csv'.each_with_index do |file, j|
+    %w'rps.csv runtime_with_startup.csv memory.csv'.each_with_index do |file, j|
       File.open("#{data_dir}/#{file}", 'wb') do |f|
         headers = %w'app'
         RANGE.each do |i|
@@ -87,8 +87,8 @@ end)
     Dir.mkdir graphs_dir unless File.directory?(graphs_dir)
 
     [
-      ['runtime', 'Runtime for 20,000 Requests'],
-      ['runtime_with_startup', 'Runtime inc. Startup for 20,000 Requests'],
+      ['rps', 'Requests/Second'],
+      ['runtime_with_startup', 'Runtime inc. Startup'],
       ['memory', 'Initial Memory Usage'],
     ].each do |file, title|
       g = Gruff::Line.new(ENV['DIM'] || '1280x720')
@@ -98,7 +98,15 @@ end)
       0.upto(columns-1){|i| labels[i] = (ROUTES_PER_LEVEL**(i+1)).to_s}
       g.labels = labels
       g.x_axis_label = 'Number of Routes'
-      g.y_axis_label = file == 'memory' ? 'RSS (MB)' : 'Seconds'
+      g.y_axis_label = case file
+      when 'rps'
+        'R/S'
+      when 'runtime_with_startup'
+        'Seconds'
+      when 'memory'
+        'RSS (MB)'
+      end
+      file == 'memory' ? 'RSS (MB)' : 'Seconds'
       max = 0
       File.read("#{data_dir}/#{file}.csv").split("\n")[1..-1].map{|l| l.split(',')}.each do |app, *data|
         data = data[0...columns]
@@ -108,11 +116,10 @@ end)
         g.data app.capitalize, data
       end
       g.y_axis_increment = if max < 10 then 1
-      elsif max < 20 then 5
-      elsif max < 50 then 10
-      elsif max < 100 then 20
-      elsif max < 200 then 50
-      else 100
+      elsif max < 100 then 10
+      elsif max < 1000 then 100
+      elsif max < 10000 then 1000
+      else 10000
       end
       g.minimum_value = 0
       g.write("#{graphs_dir}/#{file}#{"_#{columns}" unless columns == 4}.png")
