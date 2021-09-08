@@ -15,7 +15,8 @@ hanami_controllers = lambda do |f, level, prefix, class_prefix, calc_path, lvars
   base = BASE_ROUTE.dup
   if level == 1
     ROUTES_PER_LEVEL.times do
-      f.puts "  class #{(class_prefix + base).capitalize} < Hanami::Action"
+      f.puts "  class #{(class_prefix + base).capitalize}"
+      f.puts "    include Hanami::Action"
       f.puts "    def handle(req, res)"
       f.puts "      body = \"#{RESULT.call(calc_path + base)}#{lvars.map{|lvar| "-\#{req.params[:#{lvar}]}"}.join}\""
       f.puts "      res.headers['Content-Type'] = 'text/html'"
