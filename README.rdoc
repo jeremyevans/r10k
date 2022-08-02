@@ -32,7 +32,8 @@ Roda, Cuba, or Hanami.
 After cloning the repository, install the related gems:
 
   gem install gruff # if you want to create the graphs
-  gem install rails roda cuba hanami # frameworks to test
+  gem install rails roda cuba # frameworks to test
+  gem install hanami-controller hanami-router --pre
 
 A Gemfile is not used, because all web frameworks are tested independently,
 and with a Gemfile, bundler assumes all gems must be able to work together.
