@@ -36,9 +36,10 @@ File.open("#{File.dirname(__FILE__)}/../apps/rails_#{LEVELS}_#{ROUTES_PER_LEVEL}
 # frozen-string-literal: true
 require 'action_controller/railtie'
 class App < Rails::Application
-  config.secret_token = '1234567890'*5
   config.secret_key_base = 'foo'
+  config.cache_classes = true
   config.eager_load = true
+  config.public_file_server.enabled = false
   config.active_support.deprecation = :stderr
   config.middleware.delete(ActionDispatch::ShowExceptions)
   config.middleware.delete(Rack::Lock)
