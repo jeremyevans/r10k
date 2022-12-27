@@ -3,7 +3,7 @@ rails_routes = lambda do |f, level, prefix, lvars|
   controller = prefix.gsub('/', '').gsub(/:\w/, '')
   ROUTES_PER_LEVEL.times do
     if level == 1
-      f.puts "  get '#{prefix}#{base}/:#{lvars.last}' => 'main##{controller}#{base}'"
+      f.puts "    get '#{prefix}#{base}/:#{lvars.last}' => 'main##{controller}#{base}'"
     else
       rails_routes.call(f, level-1, "#{prefix}#{base}/:#{lvars.last}/", lvars + [lvars.last.succ])
     end
@@ -44,6 +44,12 @@ class App < Rails::Application
   config.logger = Logger.new('/dev/null')
   config.logger.level = 4
   config.log_level = :error 
+  routes.append do
+END
+  rails_routes.call(f, LEVELS, '/', ['a'])
+  f.puts <<END
+    match '*unmatched', to: 'application#route_not_found', via: :all
+  end
 end
 class ApplicationController < ActionController::Base
   def route_not_found
@@ -55,11 +61,6 @@ END
   rails_controllers.call(f, LEVELS, '', ['a'])
   f.puts "end"
   f.puts "App.initialize!"
-  f.puts "App.routes.clear!"
-  f.puts "App.routes.draw do"
-  rails_routes.call(f, LEVELS, '/', ['a'])
-  f.puts "  match '*unmatched', to: 'application#route_not_found', via: :all"
-  f.puts "end"
 end
 
 
