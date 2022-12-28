@@ -7,8 +7,8 @@ frameworks (in order of number of gem downloads):
 rails :: Ruby on Rails (http://rubyonrails.org/)
 sinatra :: Sinatra (http://www.sinatrarb.com/)
 roda :: Roda (http://roda.jeremyevans.net)
+hanami :: Hanami (http://hanamirb.org/)
 cuba :: Cuba (http://cuba.is)
-hanami :: Hanami (2.0 beta) (http://hanamirb.org/)
 syro :: Syro (http://soveran.github.io/syro/)
 
 These frameworks are designed to be run with the default settings.
@@ -16,7 +16,7 @@ There are some variants that can be run with non-default settings:
 
 roda-hash-routes:: Roda, using the hash_routes plugins
 roda-osm :: Roda, using optimized_string_matchers and optimized_segment_matchers plugins
-hanami-api :: Hanami (2.0 beta), using hanami-api gem
+hanami-api :: Hanami, using hanami-api gem
 
 The frameworks that are tested by default are those with more than 250,000
 gem downloads, except for Sinatra:
