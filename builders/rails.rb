@@ -32,7 +32,7 @@ File.open("#{File.dirname(__FILE__)}/../apps/rails_#{LEVELS}_#{ROUTES_PER_LEVEL}
   f.puts <<END
 # frozen-string-literal: true
 require 'action_controller/railtie'
-class App < Rails::Application
+class AppClass < Rails::Application
   config.secret_key_base = 'foo'
   config.cache_classes = true
   config.eager_load = true
@@ -59,8 +59,11 @@ end
 class MainController < ApplicationController
 END
   rails_controllers.call(f, LEVELS, '', ['a'])
-  f.puts "end"
-  f.puts "App.initialize!"
+  f.puts <<END
+end
+Rails.application.initialize!
+App = Rails.application
+END
 end
 
 
