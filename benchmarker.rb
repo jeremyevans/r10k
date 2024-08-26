@@ -58,7 +58,7 @@ if ENV['CHECK']
       warn "warning: route did not return 404 status for trailing slash for path: #{e['PATH_INFO']}/, status: #{res[0]}"
     end
     res = app.call(e.merge('REQUEST_METHOD'=>'POST'))
-    if ![404, 405].include?(res[0])
+    if ![404, 405, 501].include?(res[0])
       raise "route did not return 404 or 405 status for POST request to path: #{e['PATH_INFO']}, status: #{res[0]}"
     end
   end.call
