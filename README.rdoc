@@ -10,6 +10,7 @@ roda :: Roda (http://roda.jeremyevans.net)
 hanami :: Hanami (http://hanamirb.org/)
 cuba :: Cuba (http://cuba.is)
 syro :: Syro (http://soveran.github.io/syro/)
+cuba :: Camping (http://www.ruby-camping.com/)
 
 These frameworks are designed to be run with the default settings.
 There are some variants that can be run with non-default settings:
@@ -67,7 +68,7 @@ existing frameworks runs correctly, use the check task:
 This ensures the following:
 
 * Incomplete routes return 404
-* POST requests return 404 or 405
+* POST requests return 404, 405, or 501
 * All valid routes return expected bodies 
 * All valid routes return 200 status
 * All valid routes include text/html in Content-Type header
