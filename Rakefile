@@ -87,30 +87,33 @@ end)
     Dir.mkdir graphs_dir unless File.directory?(graphs_dir)
 
     [
-      ['rps', 'Requests/Second'],
-      ['runtime_with_startup', 'Runtime inc. Startup'],
-      ['memory', 'Initial Memory Usage'],
-    ].each do |file, title|
-      g = Gruff::Line.new(ENV['DIM'] || '1280x720')
+      ['rps', 'Requests/Second', :to_f.to_sym],
+      ['log_rps', 'Log10 Requests/Second', proc{|x| Math.log10(x.to_f)}],
+      ['runtime_with_startup', 'Runtime inc. Startup', :to_f.to_sym],
+      ['memory', 'Initial Memory Usage', proc{|x| x.to_f / 1024.0}],
+    ].each do |type, title, convertor|
+      g = Gruff::Line.new(ENV['DIM'] || '1920x1080')
       g.legend_font_size = ENV['LEGEND_FONT_SIZE'].to_i if ENV['LEGEND_FONT_SIZE']
       g.title = title
       labels = {}
       0.upto(columns-1){|i| labels[i] = (ROUTES_PER_LEVEL**(i+1)).to_s}
       g.labels = labels
       g.x_axis_label = 'Number of Routes'
-      g.y_axis_label = case file
+      g.y_axis_label = case type
       when 'rps'
         'R/S'
+      when 'log_rps'
+        'Log10 R/S'
       when 'runtime_with_startup'
         'Seconds'
       when 'memory'
         'RSS (MB)'
       end
-      file == 'memory' ? 'RSS (MB)' : 'Seconds'
       max = 0
+      file = type == 'log_rps' ? 'rps' : type
       File.read("#{data_dir}/#{file}.csv").split("\n")[1..-1].map{|l| l.split(',')}.each do |app, *data|
         data = data[0...columns]
-        file == 'memory' ? data.map!{|x| x.to_f / 1024.0} : data.map!{|x| x.to_f}
+        data.map!(&convertor)
         dmax = data.max
         max = dmax if dmax > max
         g.data app.capitalize, data
@@ -122,7 +125,7 @@ end)
       else 10000
       end
       g.minimum_value = 0
-      g.write("#{graphs_dir}/#{file}#{"_#{columns}" unless columns == 4}.png")
+      g.write("#{graphs_dir}/#{type}#{"_#{columns}" unless columns == 4}.png")
     end
   end
 
