@@ -58,6 +58,17 @@ produces CSV files which are stored in the data directory.  The graphs
 task takes those CSV files and turns them into nice looking graphs (using
 gruff), storing the graphs in the graphs directory.
 
+= Benchmarks
+
+r10k produces three benchmark numbers:
+
+* rps: Requests per second
+* memory: Memory usage to load the application (before sending requests)
+* runtime_with_startup: Total time taken to run benchmark
+
+Graphs are produced for each benchmark.  There is an additional log_rps
+graph produced, which shows the requests per second in a logarithmic scale.
+
 = Checking
 
 If you want to add support for a new framework, or check that support for
