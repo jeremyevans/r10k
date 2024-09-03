@@ -129,6 +129,7 @@ end)
       else 20000
       end
       g.minimum_value = 0
+      g.colors << "#FF0000"
       g.write("#{graphs_dir}/#{type}#{"_#{columns}" unless columns == 4}.png")
     end
   end
