@@ -134,6 +134,7 @@ R10K_ITERATIONS :: The number of iterations to run (default: 2)
 R10K_NUM_THREADS :: The number of threads to run (default: 1)
 R10K_WARMUP_ITERATIONS :: The number of warmup iterations to run (default: 0)
 ROUTES_PER_LEVEL :: The number of routes in each level (default: 10)
+MAXIMUM_VALUE_* :: Set maximum value for graph (* can be rps, log_rps, memory, runtime_with_startup)
 
 Total number of routes in largest application is ROUTES_PER_LEVEL**LEVELS.
 

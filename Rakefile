@@ -94,6 +94,9 @@ end)
     ].each do |type, title, convertor|
       g = Gruff::Line.new(ENV['DIM'] || '1920x1080')
       g.legend_font_size = ENV['LEGEND_FONT_SIZE'].to_i if ENV['LEGEND_FONT_SIZE']
+      if mv = ENV["MAXIMUM_VALUE_#{type.upcase}"]
+        g.maximum_value = mv.to_i
+      end
       g.title = title
       labels = {}
       0.upto(columns-1){|i| labels[i] = (ROUTES_PER_LEVEL**(i+1)).to_s}
