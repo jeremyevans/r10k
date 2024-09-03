@@ -18,6 +18,8 @@ There are some variants that can be run with non-default settings:
 roda-hash-routes:: Roda, using the hash_routes plugins
 roda-osm :: Roda, using optimized_string_matchers, optimized_segment_matchers,
             and plain_hash_response_headers plugins
+roda-psm :: Roda, using placeholder_string_matchers plugin (or for benchmarking
+            Roda < 2.27)
 hanami-api :: Hanami, using hanami-api gem
 
 The frameworks that are tested by default are those with more than 250,000
