@@ -20,6 +20,7 @@ roda-osm :: Roda, using optimized_string_matchers, optimized_segment_matchers,
             and plain_hash_response_headers plugins
 roda-psm :: Roda, using placeholder_string_matchers plugin (or for benchmarking
             Roda < 2.27)
+roda-sym :: Roda, using symbol matchers
 hanami-api :: Hanami, using hanami-api gem
 
 The frameworks that are tested by default are those with more than 250,000
