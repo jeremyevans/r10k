@@ -125,7 +125,8 @@ end)
       elsif max < 100 then 10
       elsif max < 1000 then 100
       elsif max < 10000 then 1000
-      else 10000
+      elsif max < 140000 then 10000
+      else 20000
       end
       g.minimum_value = 0
       g.write("#{graphs_dir}/#{type}#{"_#{columns}" unless columns == 4}.png")
