@@ -25,6 +25,7 @@ File.open("#{File.dirname(__FILE__)}/../apps/roda-osm_#{LEVELS}_#{ROUTES_PER_LEV
   f.puts "Roda.plugin :optimized_string_matchers"
   f.puts "Roda.plugin :optimized_segment_matchers"
   f.puts "Roda.plugin :direct_call"
+  f.puts "Roda.plugin :plain_hash_response_headers rescue nil"
   f.puts "Roda.route do |r|"
   f.puts "r.get do"
   roda_routes.call(f, LEVELS, [], ['a'])
