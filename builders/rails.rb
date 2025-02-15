@@ -33,6 +33,8 @@ File.open("#{File.dirname(__FILE__)}/../apps/rails_#{LEVELS}_#{ROUTES_PER_LEVEL}
 # frozen-string-literal: true
 require 'action_controller/railtie'
 class AppClass < Rails::Application
+  config.load_defaults Rails::VERSION::STRING.to_f
+  config.yjit = false
   config.secret_key_base = 'foo'
   config.cache_classes = true
   config.eager_load = true
