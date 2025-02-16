@@ -94,6 +94,10 @@ unless (n = ENV['R10K_ITERATIONS'].to_i) > 0
 end
 n *= (10000.0/(routes_per_level ** levels)).ceil
 
+if defined?(RubyVM::YJIT.enable) && ENV.fetch('R10K_YJIT', 'true') == 'true'
+  RubyVM::YJIT.enable
+end
+
 if (warmup = ENV['R10K_WARMUP_ITERATIONS'].to_i) > 0
   warmup.times{run_routes.call}
 end
