@@ -10,7 +10,7 @@ roda :: Roda (http://roda.jeremyevans.net)
 hanami :: Hanami (http://hanamirb.org/)
 cuba :: Cuba (http://cuba.is)
 syro :: Syro (http://soveran.github.io/syro/)
-cuba :: Camping (http://www.ruby-camping.com/)
+camping :: Camping (http://www.ruby-camping.com/)
 
 These frameworks are designed to be run with the default settings.
 There are some variants that can be run with non-default settings:
@@ -23,24 +23,24 @@ roda-psm :: Roda, using placeholder_string_matchers plugin (or for benchmarking
 roda-sym :: Roda, using symbol matchers
 hanami-api :: Hanami, using hanami-api gem
 
-The frameworks that are tested by default are those with more than 250,000
+The frameworks that are benchmarked by default are those with more than 250,000
 gem downloads, except for Sinatra:
 
   rails roda cuba hanami
 
-Sinatra is excluded by default because testing sinatra takes about 6x
-longer than testing Rails, and testing Rails takes 6-25x longer than testing
-Roda, Cuba, or Hanami.
+Sinatra is excluded by default because benchmarking sinatra takes about 6x
+longer than benchmarking Rails, and benchmarking Rails takes 6-25x longer than
+benchmarking Roda, Cuba, or Hanami.
 
 = Installation
 
 After cloning the repository, install the related gems:
 
   gem install gruff # if you want to create the graphs
-  gem install rails roda cuba # frameworks to test
+  gem install rails roda cuba # frameworks to benchmark
   gem install hanami-controller hanami-router
 
-A Gemfile is not used, because all web frameworks are tested independently,
+A Gemfile is not used, because all web frameworks are benchmarked independently,
 and with a Gemfile, bundler assumes all gems must be able to work together.
 
 = Usage
@@ -89,11 +89,11 @@ This ensures the following:
 * All valid routes include text/html in Content-Type header
 * All valid routes return correct Content-Length
 
-Because most Ruby web frameworks tested do not treat trailing slashes in
+Because most Ruby web frameworks benchmarked do not treat trailing slashes in
 routes correctly, considering a request without a trailing slash the
 same as a request with a trailing slash, the check task will only warn for
 incorrect handling of trailing slashes, instead of raising an exception.
-Of the web frameworks tested, only Roda and Sinatra treat routes with
+Of the web frameworks benchmarked, only Roda and Sinatra treat routes with
 trailing slashes correctly.
 
 To save time, checks are done with only 2 routes per level.
@@ -137,6 +137,7 @@ R10K_APPS :: Which applications/configurations to benchmark
 R10K_ITERATIONS :: The number of iterations to run (default: 2)
 R10K_NUM_THREADS :: The number of threads to run (default: 1)
 R10K_WARMUP_ITERATIONS :: The number of warmup iterations to run (default: 0)
+R10K_YJIT :: Set to true to enable YJIT during benchmarking (default: enabled on Ruby 3.3+)
 ROUTES_PER_LEVEL :: The number of routes in each level (default: 10)
 MAXIMUM_VALUE_* :: Set maximum value for graph (* can be rps, log_rps, memory, runtime_with_startup)
 
