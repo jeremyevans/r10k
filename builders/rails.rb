@@ -44,7 +44,6 @@ class AppClass < Rails::Application
   config.eager_load = true
   config.public_file_server.enabled = false
   config.active_support.deprecation = :stderr
-  config.middleware.delete(ActionDispatch::ShowExceptions)
   config.middleware.delete(Rack::Lock)
   config.middleware.use(Rack::ContentLength)
   config.logger = Logger.new('/dev/null')
@@ -54,13 +53,9 @@ class AppClass < Rails::Application
 END
   rails_routes.call(f, LEVELS, '/', ['a'])
   f.puts <<END
-    match '*unmatched', to: 'application#route_not_found', via: :all
   end
 end
 class ApplicationController < ActionController::Base
-  def route_not_found
-    head 404
-  end
 end
 class MainController < ApplicationController
 END
